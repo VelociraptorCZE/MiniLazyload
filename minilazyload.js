@@ -5,10 +5,11 @@
  */
 
 export default class MiniLazyload {
-	constructor (options = {}, selector = "[loading=lazy]") {
-		if (!("loading" in HTMLImageElement)) {
-			this.selector = selector;
-			this.options = options;
+	constructor (options = {}, selector = "[loading=lazy]", overrideNativeLazyload) {
+		this.selector = selector;
+		this.options = options;
+
+		if (!("loading" in HTMLImageElement.prototype) || overrideNativeLazyload) {
 			this.update();
 		}
 	}
