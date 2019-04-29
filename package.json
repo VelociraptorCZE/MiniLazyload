@@ -1,0 +1,11 @@
+{
+    "name": "minilazyload",
+    "version": "0.9.5",
+    "authors": [
+        {
+            "name": "Simon Raichl",
+            "homepage": "https://github.com/velociraptorcze"
+        }
+    ],
+    "license": "MIT"
+}
