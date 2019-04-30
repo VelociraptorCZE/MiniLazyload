@@ -29,6 +29,7 @@ export default class MiniLazyload {
 			if (intersectionRatio >= (threshold || .05)) {
 				observer.unobserve(target);
 				target.src = target.dataset.src;
+				target.classList.add("loaded");
 			}
 		});
 
@@ -59,6 +60,9 @@ export default class MiniLazyload {
 					e.preventDefault();
 					element.src = placeholder;
 				}
+
+				element.classList.add("error");
+				element.classList.remove("loaded");
 			});
 		});
 	}
