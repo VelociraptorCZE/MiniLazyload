@@ -30,6 +30,7 @@ export default class MiniLazyload {
 				observer.unobserve(target);
 				target.src = target.dataset.src;
 				target.classList.add("loaded");
+				this.translateSrcset(target.parentElement);
 			}
 		}, {
 			rootMargin: rootMargin || "0px"
@@ -49,6 +50,12 @@ export default class MiniLazyload {
 		});
 	}
 
+	translateSrcset(element) {
+		[...element.querySelectorAll("[data-srcset]")].forEach(source => {
+			source.srcset = source.dataset.srcset;
+		})
+	}
+
 	runLazyload () {
 		const { placeholder } = this.options;
 		const elements = this.getAllElements();
@@ -58,7 +65,7 @@ export default class MiniLazyload {
 			observer.observe(element);
 
 			element.addEventListener("error", e => {
-				if (placeholder) {
+				if (placeholder && element.className.indexOf("error") === -1) {
 					e.preventDefault();
 					element.src = placeholder;
 				}
