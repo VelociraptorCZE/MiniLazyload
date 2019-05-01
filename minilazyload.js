@@ -28,7 +28,13 @@ export default class MiniLazyload {
 		const observer = new IntersectionObserver(([{ intersectionRatio, target }]) => {
 			if (intersectionRatio >= (threshold || .05)) {
 				observer.unobserve(target);
-				target.src = target.dataset.src;
+				const { src, srcset } = target.dataset;
+				if (src) {
+					target.src = src;
+				}
+				if (srcset) {
+					target.srcset = srcset;
+				}
 				target.classList.add("loaded");
 				this.translateSrcset(target.parentElement);
 			}
@@ -51,9 +57,11 @@ export default class MiniLazyload {
 	}
 
 	translateSrcset(element) {
-		[...element.querySelectorAll("[data-srcset]")].forEach(source => {
-			source.srcset = source.dataset.srcset;
-		})
+		if (element instanceof HTMLPictureElement) {
+			[...element.querySelectorAll("[data-srcset]")].forEach(source => {
+				source.srcset = source.dataset.srcset;
+			});
+		}
 	}
 
 	runLazyload () {
@@ -64,9 +72,8 @@ export default class MiniLazyload {
 			const observer = this.createObserver();
 			observer.observe(element);
 
-			element.addEventListener("error", e => {
+			element.addEventListener("error", () => {
 				if (placeholder && element.className.indexOf("error") === -1) {
-					e.preventDefault();
 					element.src = placeholder;
 				}
 
