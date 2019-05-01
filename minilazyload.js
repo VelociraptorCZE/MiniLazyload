@@ -26,7 +26,7 @@ export default class MiniLazyload {
 	createObserver () {
 		const { threshold, rootMargin } = this.options;
 		const observer = new IntersectionObserver(([{ intersectionRatio, target }]) => {
-			if (intersectionRatio >= (threshold || .05)) {
+			if (intersectionRatio > 0) {
 				observer.unobserve(target);
 				const { src, srcset } = target.dataset;
 				if (src) {
@@ -39,7 +39,8 @@ export default class MiniLazyload {
 				this.translateSrcset(target.parentElement);
 			}
 		}, {
-			rootMargin: rootMargin || "0px"
+			rootMargin: rootMargin || "0px",
+			threshold: threshold || .05
 		});
 
 		return observer;
