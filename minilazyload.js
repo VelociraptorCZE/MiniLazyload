@@ -5,25 +5,25 @@
  */
 
 export default class MiniLazyload {
-	constructor (options = {}, selector = "[loading=lazy]", overrideNativeLazyload) {
+	constructor (options = {}, selector = "[loading=lazy]", override) {
 		this.selector = selector;
 		this.options = options;
-
-		if (!("loading" in HTMLImageElement.prototype) || overrideNativeLazyload) {
-			this.update();
-		}
+		this.override = override;
+		this.update();
 	}
 
 	update () {
-		if (window.IntersectionObserver) {
-			this.runLazyload();
-		}
-		else {
-			this.ignoreLazyload();
+		if (!HTMLImageElement.prototype.hasOwnProperty("loading") || this.override) {
+			if (window.IntersectionObserver) {
+				this.runLazyload();
+			}
+			else {
+				this.ignoreLazyload();
+			}
 		}
 	}
 
-	createObserver () {
+	get newObserver () {
 		const { threshold, rootMargin } = this.options;
 		const observer = new IntersectionObserver(([{ intersectionRatio, target }]) => {
 			if (intersectionRatio > 0) {
@@ -35,8 +35,7 @@ export default class MiniLazyload {
 				if (srcset) {
 					target.srcset = srcset;
 				}
-				target.classList.add("loaded");
-				this.translateSrcset(target.parentElement);
+				this.loaded(target);
 			}
 		}, {
 			rootMargin: rootMargin || "0px",
@@ -46,19 +45,26 @@ export default class MiniLazyload {
 		return observer;
 	}
 
-	getAllElements () {
-		const { selector } = this;
-		return [...document.querySelectorAll(`img${selector}, iframe${selector}`)];
+	get allElements () {
+		return [...document.querySelectorAll(`img${this.selector}, iframe${this.selector}`)];
+	}
+
+	loaded (element) {
+		element.classList.add("loaded");
+		this.translateSrcset(element.parentElement);
 	}
 
 	ignoreLazyload () {
-		this.getAllElements().forEach(element => {
+		this.allElements.forEach(element => {
+			this.onError(element);
+			this.loaded(element);
 			element.src = element.dataset.src;
 		});
 	}
 
-	translateSrcset(element) {
-		if (element instanceof HTMLPictureElement) {
+	translateSrcset (element) {
+		const pic = window.HTMLPictureElement;
+		if (pic && element instanceof pic) {
 			[...element.querySelectorAll("[data-srcset]")].forEach(source => {
 				source.srcset = source.dataset.srcset;
 			});
@@ -66,21 +72,22 @@ export default class MiniLazyload {
 	}
 
 	runLazyload () {
+		this.allElements.forEach(element => {
+			this.newObserver.observe(element);
+			this.onError(element);
+		});
+	}
+
+	onError (element) {
 		const { placeholder } = this.options;
-		const elements = this.getAllElements();
 
-		elements.forEach(element => {
-			const observer = this.createObserver();
-			observer.observe(element);
+		element.addEventListener("error", () => {
+			if (placeholder && element.className.indexOf("error") === -1) {
+				element.src = placeholder;
+			}
 
-			element.addEventListener("error", () => {
-				if (placeholder && element.className.indexOf("error") === -1) {
-					element.src = placeholder;
-				}
-
-				element.classList.add("error");
-				element.classList.remove("loaded");
-			});
+			element.classList.add("error");
+			element.classList.remove("loaded");
 		});
 	}
 }
