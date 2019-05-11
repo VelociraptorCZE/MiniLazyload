@@ -8,17 +8,17 @@ export default class MiniLazyload {
 	constructor (options = {}, selector = "[loading=lazy]", override) {
 		this.selector = selector;
 		this.options = options;
-		this.override = override;
+		this.enabled = !HTMLImageElement.prototype.hasOwnProperty("loading") || override;
 		this.update();
 	}
 
 	update () {
-		if (!HTMLImageElement.prototype.hasOwnProperty("loading") || this.override) {
+		if (this.enabled) {
 			if (window.IntersectionObserver) {
 				this.runLazyload();
 			}
 			else {
-				this.ignoreLazyload();
+				this.loadImages();
 			}
 		}
 	}
@@ -28,14 +28,7 @@ export default class MiniLazyload {
 		const observer = new IntersectionObserver(([{ intersectionRatio, target }]) => {
 			if (intersectionRatio > 0) {
 				observer.unobserve(target);
-				const { src, srcset } = target.dataset;
-				if (src) {
-					target.src = src;
-				}
-				if (srcset) {
-					target.srcset = srcset;
-				}
-				this.loaded(target);
+				this.load(target);
 			}
 		}, {
 			rootMargin: rootMargin || "0px",
@@ -49,22 +42,29 @@ export default class MiniLazyload {
 		return [...document.querySelectorAll(`img${this.selector}, iframe${this.selector}`)];
 	}
 
-	loaded (element) {
-		element.classList.add("loaded");
-		this.translateSrcset(element.parentElement);
+	load (target) {
+		const { src, srcset } = target.dataset;
+
+		if (src) {
+			target.src = src;
+		}
+		if (srcset) {
+			target.srcset = srcset;
+		}
+
+		target.classList.add("loaded");
+		this.translateSrcset(target.parentElement);
 	}
 
-	ignoreLazyload () {
+    loadImages () {
 		this.allElements.forEach(element => {
 			this.onError(element);
-			this.loaded(element);
-			element.src = element.dataset.src;
+			this.load(element);
 		});
 	}
 
 	translateSrcset (element) {
-		const pic = window.HTMLPictureElement;
-		if (pic && element instanceof pic) {
+		if (window.HTMLPictureElement && element instanceof HTMLPictureElement) {
 			[...element.querySelectorAll("[data-srcset]")].forEach(source => {
 				source.srcset = source.dataset.srcset;
 			});
