@@ -56,7 +56,7 @@ export default class MiniLazyload {
 		this.translateSrcset(target.parentElement);
 	}
 
-    loadImages () {
+	loadImages () {
 		this.allElements.forEach(element => {
 			this.onError(element);
 			this.load(element);
