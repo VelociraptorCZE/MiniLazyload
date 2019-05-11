@@ -14,12 +14,7 @@ export default class MiniLazyload {
 
 	update () {
 		if (this.enabled) {
-			if (window.IntersectionObserver) {
-				this.runLazyload();
-			}
-			else {
-				this.loadImages();
-			}
+			this.loadImages(void 0, false);
 		}
 	}
 
@@ -28,7 +23,7 @@ export default class MiniLazyload {
 		const observer = new IntersectionObserver(([{ intersectionRatio, target }]) => {
 			if (intersectionRatio > 0) {
 				observer.unobserve(target);
-				this.load(target);
+				this.loadImage(target);
 			}
 		}, {
 			rootMargin: rootMargin || "0px",
@@ -42,7 +37,7 @@ export default class MiniLazyload {
 		return [...document.querySelectorAll(`img${this.selector}, iframe${this.selector}`)];
 	}
 
-	load (target) {
+	loadImage (target) {
 		const { src, srcset } = target.dataset;
 
 		if (src) {
@@ -56,10 +51,17 @@ export default class MiniLazyload {
 		this.translateSrcset(target.parentElement);
 	}
 
-	loadImages () {
+	loadImages (callback = () => {}, loadImmediately = true) {
 		this.allElements.forEach(element => {
 			this.onError(element);
-			this.load(element);
+			callback(element);
+
+			if (!window.IntersectionObserver || loadImmediately) {
+				this.loadImage(element);
+			}
+			else {
+				this.newObserver.observe(element);
+			}
 		});
 	}
 
@@ -69,13 +71,6 @@ export default class MiniLazyload {
 				source.srcset = source.dataset.srcset;
 			});
 		}
-	}
-
-	runLazyload () {
-		this.allElements.forEach(element => {
-			this.newObserver.observe(element);
-			this.onError(element);
-		});
 	}
 
 	onError (element) {
