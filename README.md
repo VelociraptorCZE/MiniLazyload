@@ -19,32 +19,31 @@ library selects only images and iframes, so default selector looks like:
 "img[loading=lazy], iframe[loading=lazy]"
 ```
 
-You can change this default settings, for example if you want to select iframes and images by class ".lazyload" 
-then just add parameter to the constructor call:
+You can change these default settings, for example, if you want to select iframes and images by class ".lazyload" 
+then just add the parameter to the constructor call:
 
 ```js
 new MiniLazyload({}, ".lazyload"); // "img.lazyload, iframe.lazyload"
 ```
 
-You might ask why there is first parameter filled with empty object. 
-Reason is that in first parameter you pass an object with options which modifies the lazyload behavior, 
-so even in case you want to change only the default selector you still need to pass two parameters anyway.
+You might ask why there is the first parameter filled with an empty object. 
+The reason is that in the first parameter you pass an object with options which modifies the lazyload behavior, 
+so even in the case, you want to change only the default selector you still need to pass two parameters anyway.
 
 ## Options
 
 At this point it should be all flawless, right? Now we can jump into mentioned options
-you can set placeholder, threshold and rootMargin.
-How does each option works? 
+you can set placeholder, threshold, and rootMargin.
+How does each option work? 
 
 Placeholder option sets the placeholder image when the Error event is called
 so for example when the path to the image is wrong and the placeholder is defined library will load the placeholder instead.
 
-Threshold could be useful when you have specified some exact height for your element 
-and you want to load image when some part of that element is visible in current viewport,
-then for example when half of the element is visible in this case you can set threshold to .5 to make this work. 
+The threshold could be useful when you have specified some exact height for your element and you want to load an image when some part of that element is visible in the current viewport,
+then for example when half of the element is visible in this case you can set the threshold to .5 to make this work. 
 
-The last parameter is rootMargin and by default is set margin to 0 so the image will be loaded immediately when you scroll on it.
-Sometimes you need to load images before and just for this purpose you can use this parameter.
+The last parameter is rootMargin and by default is set the margin to 0 so the image will be loaded immediately when you scroll on it.
+Sometimes you need to load images before and just for this purpose, you can use this parameter.
 For example "500px 0px 500px 0px" will load image element is near viewport ±500px from top or bottom. 
 
 These options are of course completely optional and can be omitted.
@@ -59,7 +58,7 @@ new MiniLazyload({
 
 ### HTML
 Both **src** and **srcset** attributes are supported, although srcset is supported not only with images,
-but also on descendents of picture element which has **data-srcset** attribute.
+but also on descendants of picture element which has **data-srcset** attribute.
 You need to add to your elements data attribute either **data-src** or **data-srcset**.
 
 ```html
