@@ -44,7 +44,7 @@ then for example when half of the element is visible in this case you can set th
 
 The last parameter is rootMargin and by default is set the margin to 0 so the image will be loaded immediately when you scroll on it.
 Sometimes you need to load images before and just for this purpose, you can use this parameter.
-For example "500px 0px 500px 0px" will load image element is near viewport ±500px from top or bottom. 
+For example "500px 0px 500px 0px" will load an image when the element is near viewport ±500px from top or bottom. 
 
 These options are of course completely optional and can be omitted.
 
