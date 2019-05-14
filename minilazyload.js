@@ -47,13 +47,12 @@ export default class MiniLazyload {
 			target.srcset = srcset;
 		}
 
-		target.classList.add("loaded");
 		this.translateSrcset(target.parentElement);
 	}
 
 	loadImages (callback = () => {}, loadImmediately = true) {
 		this.allElements.forEach(element => {
-			this.onError(element);
+			this.onEvents(element);
 			callback(element);
 
 			if (!window.IntersectionObserver || loadImmediately) {
@@ -73,16 +72,18 @@ export default class MiniLazyload {
 		}
 	}
 
-	onError (element) {
+	onEvents (element) {
 		const { placeholder } = this.options;
+		const loaded = () => element.classList.add("loaded");
 
 		element.addEventListener("error", () => {
 			if (placeholder && element.className.indexOf("error") === -1) {
 				element.src = placeholder;
 			}
-
 			element.classList.add("error");
-			element.classList.remove("loaded");
+			element.removeEventListener("load", loaded);
 		});
+
+		element.addEventListener("load", loaded);
 	}
 }
