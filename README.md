@@ -1,64 +1,146 @@
 # MiniLazyload
+A tiny library for image and iframe lazyloading.
+
+### Installation
+
+```
+npm install minilazyload
+```
+
+### Launchpad
 
 Using this library is actually easy and straightforward. Start with importing this library to your script:
 
 ```js
-import MiniLazyload from "minilazyload/minilazyload";
+import MiniLazyload from "minilazyload";
 ```
 
-Then just simply call the constructor of the MiniLazyload class:
+Then just simply instantiate MiniLazyload:
 
 ```js
 new MiniLazyload();
 ```
 
-By default this library selects elements with attribute loading which equals to "lazy" also please be aware that 
-library selects only images and iframes, so default selector looks like:
+## Constructor parameters
+
+Constructor takes three parameters and all of them could be omitted.
+
+- options
+- selector
+- override
+
+### Options
+
+In first parameter you can define object with some properties which then will be used for IntersectionObserver.
+
+- rootMargin
+- threshold
+- placeholder
+
+#### rootMargin
+
+Root margin is useful when you want load images within some "buffer zone". This means, if you set rootMargin to 500px
+then images in the current viewport and also images up to 500px from each side will be loaded. 
+Since the value of this parameter is directly passed to IntersectionObserver you can use either px or %.
+
+```js
+new MiniLazyload({
+    rootMargin: "500px"
+});
+```
+
+#### threshold
+
+If you want to load image when the certain part of image is in the current viewport then you can use threshold.
+For example when image has to be loaded if the half of the image is visible in the viewport:
+
+```js
+new MiniLazyload({
+    rootMargin: "500px",
+    threshold: .5
+});
+```
+
+#### placeholder
+
+Placeholder is the only parameter what doesn't work with IntersectionObserver whatsoever. When the error event occurs
+on your image and placeholder is defined, then library will change **src** in your image to your placeholder src
+in order to load a placeholder image.
+
+```js
+new MiniLazyload({
+    rootMargin: "500px",
+    threshold: .5,
+    placeholder: "https://imgplaceholder.com/420x320/ff7f7f/333333/fa-image"
+});
+```
+
+### Selector
+
+By default this library selects elements with attribute loading which equals to "lazy" also please be aware 
+library selects only images and iframes. Default selector looks equals to:
 
 ```js
 "img[loading=lazy], iframe[loading=lazy]"
 ```
 
-You can change these default settings, for example, if you want to select iframes and images by class ".lazyload" 
-then just add the parameter to the constructor call:
-
-```js
-new MiniLazyload({}, ".lazyload"); // "img.lazyload, iframe.lazyload"
-```
-
-You might ask why there is the first parameter filled with an empty object. 
-The reason is that in the first parameter you pass an object with options which modifies the lazyload behavior, 
-so even in the case, you want to change only the default selector you still need to pass two parameters anyway.
-
-## Options
-
-At this point it should be all flawless, right? Now we can jump into mentioned options
-you can set placeholder, threshold, and rootMargin.
-How does each option work? 
-
-Placeholder option sets the placeholder image when the Error event is called
-so for example when the path to the image is wrong and the placeholder is defined library will load the placeholder instead.
-
-The threshold could be useful when you have specified some exact height for your element and you want to load an image when some part of that element is visible in the current viewport,
-then for example when half of the element is visible in this case you can set the threshold to .5 to make this work. 
-
-The last parameter is rootMargin and by default is set the margin to 0 so the image will be loaded immediately when you scroll on it.
-Sometimes you need to load images before and just for this purpose, you can use this parameter.
-For example "500px 0px 500px 0px" will load an image when the element is near viewport ±500px from top or bottom. 
-
-These options are of course completely optional and can be omitted.
+You can change those default settings, just pass your own selector instead.
 
 ```js
 new MiniLazyload({
-    placeholder: "https://imgplaceholder.com/420x320/ff7f7f/333333/fa-image",
-    threshold: .1,
-    rootMargin: "500px 0px 500px 0px"
-}, ".lazyload");
+    rootMargin: "500px",
+    threshold: .5,
+    placeholder: "https://imgplaceholder.com/420x320/ff7f7f/333333/fa-image"
+}, ".lazyload"); // img.lazyload, iframe.lazyload
 ```
 
-### HTML
-Both **src** and **srcset** attributes are supported, although srcset is supported not only with images,
-but also on descendants of picture element which has **data-srcset** attribute.
+### Override
+
+This is third and final parameter. MiniLazyload isn't executed in browsers which supports native lazyload by default,
+since Chrome is already shipped with this feature. You have two possible options to deal with this behavior with two different outcomes.
+
+If you omit this parameter then you should implement
+action to browsers with native lazyload, thankfully, this is fairly easy with this library.
+
+#### First option
+
+If you set override to *true*, then library will ignore native lazyload and MiniLazyload will be executed, or you can use
+**MiniLazyload.IGNORE_NATIVE_LAZYLOAD** flag for better readability. 
+
+```js
+new MiniLazyload({
+    rootMargin: "500px",
+    threshold: .5,
+    placeholder: "https://imgplaceholder.com/420x320/ff7f7f/333333/fa-image"
+}, ".lazyload", MiniLazyload.IGNORE_NATIVE_LAZYLOAD); // Easiest option
+```
+
+#### Second and preferable option
+
+```js
+const lazyload = new MiniLazyload({
+    rootMargin: "500px",
+    threshold: .5,
+    placeholder: "https://imgplaceholder.com/420x320/ff7f7f/333333/fa-image"
+}, ".lazyload");
+
+if (!lazyload.enabled) {
+    lazyload.loadImages(image => {
+       image.loading = "lazy";
+    });
+}
+```
+
+Every instance of MiniLazyload has property **enabled**, this property equals to *true* when override isn't set
+and browser doesn't have the native lazyload. So when **enabled** equals to false we need to handle this.
+
+You can use **loadImages** method, although this method is used internally you can use it to your advantage. It's
+also possible to pass a callback along with this method and you can set some important properties for each image in that callback.
+Bare minimum is to set attribute loading to *"lazy"* if isn't set previously and the library will do rest for you.
+
+## HTML
+Both **src** and **srcset** attributes are supported and srcset is supported with images,
+but also with descendants of picture element which has **data-srcset** attribute.
 You need to add to your elements data attribute either **data-src** or **data-srcset**.
 
 ```html
@@ -67,13 +149,6 @@ You need to add to your elements data attribute either **data-src** or **data-sr
     <img data-src="https://something.domain/some-image2.jpg" alt="" class="lazyload">
 </picture>
 ```
-
-When **img** is in the viewport, library will add **src** attribute, 
-also alongside with adding src attribute if the parent element is the **picture** element then 
-library finds elements within this element with **data-srcset** attribute
-and assigns **srcset** attribute for respective elements.
-
-Other examples:
 
 ```html
 <img data-srcset="https://something.domain/some-image.jpg 540w,

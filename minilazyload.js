@@ -5,32 +5,27 @@
  */
 
 export default class MiniLazyload {
-	constructor (options = {}, selector = "[loading=lazy]", override) {
-		this.selector = selector;
+	constructor (options = {}, selector, override) {
+		this.selector = selector || "[loading=lazy]";
 		this.options = options;
-		this.enabled = !HTMLImageElement.prototype.hasOwnProperty("loading") || override;
+		this.enabled = !HTMLImageElement.prototype.hasOwnProperty("loading")
+			|| override === MiniLazyload.IGNORE_NATIVE_LAZYLOAD;
 		this.update();
 	}
 
 	update () {
 		if (this.enabled) {
-			this.loadImages(void 0, false);
+			this.loadImages(() => {}, false);
 		}
 	}
 
 	get newObserver () {
-		const { threshold, rootMargin } = this.options;
-		const observer = new IntersectionObserver(([{ intersectionRatio, target }]) => {
+		return new IntersectionObserver(([{ intersectionRatio, target }], observer) => {
 			if (intersectionRatio > 0) {
 				observer.unobserve(target);
 				this.loadImage(target);
 			}
-		}, {
-			rootMargin: rootMargin || "0px",
-			threshold: threshold || .05
-		});
-
-		return observer;
+		}, this.options);
 	}
 
 	get allElements () {
@@ -85,5 +80,9 @@ export default class MiniLazyload {
 		});
 
 		element.addEventListener("load", loaded);
+	}
+
+	static get IGNORE_NATIVE_LAZYLOAD () {
+		return true;
 	}
 }
