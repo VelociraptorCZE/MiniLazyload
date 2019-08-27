@@ -4,7 +4,7 @@ A tiny library for image and iframe lazyloading.
 ### Installation
 
 ```
-npm install minilazyload
+npm i minilazyload
 ```
 
 ### Launchpad
@@ -77,21 +77,40 @@ new MiniLazyload({
 
 ### Selector
 
-By default this library selects elements with attribute loading which equals to "lazy" also please be aware 
-library selects only images and iframes. Default selector looks equals to:
+By default this library selects elements with attribute loading which equals to "lazy". 
+___
+##### Before version 2.0.0
+Please be aware library selects only images and iframes.
+
+Default selector equals to:
 
 ```js
 "img[loading=lazy], iframe[loading=lazy]"
 ```
 
-You can change those default settings, just pass your own selector instead.
+##### From version 2.0.0 onwards
+
+Library selects no longer only images and iframes.
+I've made decision in order to make this library more flexible.
+
+Default selector:
+
+```js
+"[loading=lazy]"
+```
+___
+
+You can change this default selector, just pass your own selector instead as a second parameter.
 
 ```js
 new MiniLazyload({
     rootMargin: "500px",
     threshold: .5,
     placeholder: "https://imgplaceholder.com/420x320/ff7f7f/333333/fa-image"
-}, ".lazyload"); // img.lazyload, iframe.lazyload
+}, ".lazyload"); 
+
+// <= 1.0.8: img.lazyload, iframe.lazyload
+// >= 2.0.0: .lazyload
 ```
 
 ### Override

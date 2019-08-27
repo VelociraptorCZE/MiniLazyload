@@ -4,70 +4,63 @@
  * MIT License
  */
 
-export default class MiniLazyload {
-	constructor (options = {}, selector, override) {
-		this.selector = selector || "[loading=lazy]";
-		this.options = options;
-		this.enabled = !HTMLImageElement.prototype.hasOwnProperty("loading")
-			|| override === MiniLazyload.IGNORE_NATIVE_LAZYLOAD;
-		this.update();
-	}
-
-	update () {
+export default function MiniLazyload (options = {}, selector, override) {
+	this.update = () => {
 		if (this.enabled) {
 			this.loadImages(() => {}, false);
 		}
-	}
+	};
 
-	get newObserver () {
-		return new IntersectionObserver(([{ intersectionRatio, target }], observer) => {
-			if (intersectionRatio > 0) {
-				observer.unobserve(target);
-				this.loadImage(target);
+	this.allElements = () => [].slice.call(document.querySelectorAll(this.selector));
+
+	this.loadImages = (callback = () => {}, loadImmediately = true) => {
+		this.allElements().forEach(element => {
+			onEvents(element);
+			callback(element);
+
+			if (!window.IntersectionObserver || loadImmediately) {
+				loadImage(element);
 			}
-		}, this.options);
-	}
+			else {
+				newObserver().observe(element);
+			}
+		});
+	};
 
-	get allElements () {
-		return [...document.querySelectorAll(`img${this.selector}, iframe${this.selector}`)];
-	}
+	const newObserver = () => (
+		new IntersectionObserver((entries, observer) => {
+			entries.forEach(({ intersectionRatio, target }) => {
+				if (intersectionRatio > 0) {
+					observer.unobserve(target);
+					loadImage(target);
+				}
+			});
+		}, this.options)
+	);
 
-	loadImage (target) {
+	const loadImage = (target) => {
 		const { src, srcset } = target.dataset;
 
 		if (src) {
 			target.src = src;
 		}
+
 		if (srcset) {
 			target.srcset = srcset;
 		}
 
-		this.translateSrcset(target.parentElement);
-	}
+		translateSrcset(target.parentElement);
+	};
 
-	loadImages (callback = () => {}, loadImmediately = true) {
-		this.allElements.forEach(element => {
-			this.onEvents(element);
-			callback(element);
-
-			if (!window.IntersectionObserver || loadImmediately) {
-				this.loadImage(element);
-			}
-			else {
-				this.newObserver.observe(element);
-			}
-		});
-	}
-
-	translateSrcset (element) {
+	const translateSrcset = element => {
 		if (window.HTMLPictureElement && element instanceof HTMLPictureElement) {
-			[...element.querySelectorAll("[data-srcset]")].forEach(source => {
+			[].slice.call(element.querySelectorAll("[data-srcset]")).forEach(source => {
 				source.srcset = source.dataset.srcset;
 			});
 		}
-	}
+	};
 
-	onEvents (element) {
+	const onEvents = element => {
 		const { placeholder } = this.options;
 		const loaded = () => element.classList.add("loaded");
 
@@ -80,9 +73,13 @@ export default class MiniLazyload {
 		});
 
 		element.addEventListener("load", loaded);
-	}
+	};
 
-	static get IGNORE_NATIVE_LAZYLOAD () {
-		return true;
-	}
+	this.selector = selector || "[loading=lazy]";
+	this.options = options;
+	this.enabled = !HTMLImageElement.prototype.hasOwnProperty("loading")
+		|| override === MiniLazyload.IGNORE_NATIVE_LAZYLOAD;
+	this.update();
 }
+
+MiniLazyload.IGNORE_NATIVE_LAZYLOAD = true;
