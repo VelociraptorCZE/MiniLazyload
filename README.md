@@ -1,4 +1,5 @@
-# MiniLazyload
+# MiniLazyload [![](https://data.jsdelivr.com/v1/package/npm/minilazyload/badge?style=rounded)](https://www.jsdelivr.com/package/npm/minilazyload)
+
 A tiny library for image and iframe lazyloading.
 
 ### Installation
