@@ -8,6 +8,14 @@ A tiny library for image and iframe lazyloading.
 - support for responsive images and placeholders
 - convenient usage of native lazyload with library support
 
+### HTML import
+
+If you want to directly import minified script to your HTML, you can do that with this piece of code:
+
+```js
+<script src="https://cdn.jsdelivr.net/npm/minilazyload@2.0.0/dist/minilazyload.min.js"></script>
+```
+
 ### Installation
 
 ```
