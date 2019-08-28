@@ -1,6 +1,12 @@
-# MiniLazyload [![](https://data.jsdelivr.com/v1/package/npm/minilazyload/badge?style=rounded)](https://www.jsdelivr.com/package/npm/minilazyload)
+# MiniLazyload [![](https://data.jsdelivr.com/v1/package/npm/minilazyload/badge?style=rounded)](https://www.jsdelivr.com/package/npm/minilazyload) ![npm](https://img.shields.io/npm/dm/minilazyload) ![npm bundle size](https://img.shields.io/bundlephobia/min/minilazyload)
 
 A tiny library for image and iframe lazyloading.
+
+### Features
+
+- small size (1kB gzipped)
+- support for responsive images and placeholders
+- convenient usage of native lazyload with library support
 
 ### Installation
 
@@ -92,7 +98,7 @@ Default selector equals to:
 ##### From version 2.0.0 onwards
 
 Library selects no longer only images and iframes.
-I've made decision in order to make this library more flexible.
+I've made decision to make this library more flexible.
 
 Default selector:
 
