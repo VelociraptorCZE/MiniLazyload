@@ -12,7 +12,7 @@ A tiny library for image and iframe lazyloading.
 
 If you want to directly import minified script to your HTML, you can do that with this piece of code:
 
-```js
+```html
 <script src="https://cdn.jsdelivr.net/npm/minilazyload@2.0.0/dist/minilazyload.min.js"></script>
 ```
 
@@ -171,6 +171,35 @@ and browser doesn't have the native lazyload. So when **enabled** equals to fals
 You can use **loadImages** method, although this method is used internally you can use it to your advantage. It's
 also possible to pass a callback along with this method and you can set some important properties for each image in that callback.
 Bare minimum is to set attribute loading to *"lazy"* if isn't set previously and the library will do rest for you.
+
+#### useNativeLazyload wrapper
+
+Since version 2.1.0 you can instead of making this fallback for browsers with native lazyload use this function.
+
+Function takes two parameters, first is instance of MiniLazyload and second is optional callback.
+Returns your instance of MiniLazyload.
+
+##### Module import
+
+```js
+import useNativeLazyload from "minilazyload/usenativelazyload";
+```
+
+##### HTML import
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/minilazyload@2.1.0/dist/usenativelazyload.min.js"></script>
+```
+
+##### Example
+
+```js
+const lazyload = useNativeLazyload(new MiniLazyload({
+    rootMargin: "500px",
+    threshold: .5,
+    placeholder: "https://imgplaceholder.com/420x320/ff7f7f/333333/fa-image"
+}, ".lazyload"));
+```
 
 ## HTML
 Both **src** and **srcset** attributes are supported and srcset is supported with images,
