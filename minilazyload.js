@@ -5,7 +5,7 @@
  */
 
 export default function MiniLazyload (options = {}, selector, override) {
-	const isIntersectionObserverNotSupported = !window.IntersectionObserver;
+	const isIntersectionObserverNotSupported = () => !window.IntersectionObserver;
 
 	this.update = () => {
 		if (this.enabled) {
@@ -20,7 +20,7 @@ export default function MiniLazyload (options = {}, selector, override) {
 			onEvents(element);
 			callback(element);
 
-			if (isIntersectionObserverNotSupported || loadImmediately) {
+			if (isIntersectionObserverNotSupported() || loadImmediately) {
 				loadImage(element);
 			}
 			else {
@@ -51,7 +51,7 @@ export default function MiniLazyload (options = {}, selector, override) {
 			target.srcset = srcset;
 		}
 
-		if ((loadBg || isIntersectionObserverNotSupported) && bg) {
+		if ((loadBg || isIntersectionObserverNotSupported()) && bg) {
 			target.style.backgroundImage = `url(${bg})`;
 		}
 
