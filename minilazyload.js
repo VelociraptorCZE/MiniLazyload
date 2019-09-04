@@ -5,6 +5,8 @@
  */
 
 export default function MiniLazyload (options = {}, selector, override) {
+	const isIntersectionObserverNotSupported = () => !window.IntersectionObserver;
+
 	this.update = () => {
 		if (this.enabled) {
 			this.loadImages(() => {}, false);
@@ -18,28 +20,28 @@ export default function MiniLazyload (options = {}, selector, override) {
 			onEvents(element);
 			callback(element);
 
-			if (!window.IntersectionObserver || loadImmediately) {
+			if (isIntersectionObserverNotSupported() || loadImmediately) {
 				loadImage(element);
 			}
 			else {
-				newObserver().observe(element);
+				this.newObserver().observe(element);
 			}
 		});
 	};
 
-	const newObserver = () => (
+	this.newObserver = () => (
 		new IntersectionObserver((entries, observer) => {
 			entries.forEach(({ intersectionRatio, target }) => {
 				if (intersectionRatio > 0) {
 					observer.unobserve(target);
-					loadImage(target);
+					loadImage(target, true);
 				}
 			});
 		}, this.options)
 	);
 
-	const loadImage = (target) => {
-		const { src, srcset } = target.dataset;
+	const loadImage = (target, loadBg) => {
+		const { src, srcset, bg } = target.dataset;
 
 		if (src) {
 			target.src = src;
@@ -47,6 +49,10 @@ export default function MiniLazyload (options = {}, selector, override) {
 
 		if (srcset) {
 			target.srcset = srcset;
+		}
+
+		if ((loadBg || isIntersectionObserverNotSupported()) && bg) {
+			target.style.backgroundImage = `url(${bg})`;
 		}
 
 		translateSrcset(target.parentElement);

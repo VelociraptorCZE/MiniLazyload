@@ -6,9 +6,17 @@
 
 export default function useNativeLazyload (miniLazyload, callback) {
     if (!miniLazyload.enabled) {
-        miniLazyload.loadImages(function (image) {
+        miniLazyload.allElements().forEach(element => {
+            if (element.dataset.bg) {
+                miniLazyload.newObserver().observe(element);
+            }
+        });
+
+        miniLazyload.loadImages(image => {
             image.loading = "lazy";
-            callback && callback(image);
+            if (callback) {
+                callback(image);
+            }
         });
     }
 

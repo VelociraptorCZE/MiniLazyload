@@ -1,10 +1,10 @@
 # MiniLazyload [![](https://data.jsdelivr.com/v1/package/npm/minilazyload/badge?style=rounded)](https://www.jsdelivr.com/package/npm/minilazyload) ![npm](https://img.shields.io/npm/dm/minilazyload) ![npm bundle size](https://img.shields.io/bundlephobia/min/minilazyload)
 
-A tiny library for image and iframe lazyloading.
+A tiny library for image, iframe and background lazyloading.
 
 ### Features
 
-- small size (1kB gzipped)
+- small size (under 1kB gzipped)
 - support for responsive images and placeholders
 - convenient usage of native lazyload with library support
 
@@ -13,13 +13,13 @@ A tiny library for image and iframe lazyloading.
 If you want to directly import minified script to your HTML, you can do that with this piece of code:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/minilazyload@2.1.0/dist/minilazyload.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/minilazyload@2.1.5/dist/minilazyload.min.js"></script>
 ```
 
 ### Installation
 
 ```
-npm i minilazyload
+npm i minilazyload --save
 ```
 
 ### Launchpad
@@ -188,7 +188,7 @@ import useNativeLazyload from "minilazyload/usenativelazyload";
 ##### HTML import
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/minilazyload@2.1.0/dist/usenativelazyload.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/minilazyload@2.1.5/dist/usenativelazyload.min.js"></script>
 ```
 
 ##### Example
@@ -205,6 +205,7 @@ const lazyload = useNativeLazyload(new MiniLazyload({
 Both **src** and **srcset** attributes are supported and srcset is supported with images,
 but also with descendants of picture element which has **data-srcset** attribute.
 You need to add to your elements data attribute either **data-src** or **data-srcset**.
+For background lazyloading use **data-bg** attribute.
 
 ```html
 <picture>
@@ -220,4 +221,8 @@ You need to add to your elements data attribute either **data-src** or **data-sr
 
 ```html
 <img data-src="https://something.domain/some-image.jpg" alt="" class="lazyload">
+```
+
+```html
+<div data-bg="https://something.domain/some-image.jpg" class="lazyload"></div>
 ```
