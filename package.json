@@ -1,6 +1,17 @@
 {
     "name": "minilazyload",
     "version": "2.1.5",
+    "scripts": {
+        "build-watch": "rollup -c --watch",
+        "build": "rollup -c"
+    },
+    "devDependencies": {
+        "@babel/core": "7.5.5",
+        "@babel/preset-env": "7.5.5",
+        "rollup-plugin-uglify": "6.0.3",
+        "rollup-plugin-babel": "4.3.3",
+        "rollup": "1.20.3"
+    },
     "authors": [
         {
             "name": "Simon Raichl",
