@@ -5,7 +5,7 @@
  */
 
 export default function MiniLazyload (options = {}, selector, override) {
-	const isIntersectionObserverNotSupported = () => !window.IntersectionObserver;
+  const isIntersectionObserverNotSupported = () => !window.IntersectionObserver;
 
 	this.update = () => {
 		if (this.enabled) {
