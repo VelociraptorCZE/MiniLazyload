@@ -51,6 +51,7 @@ In first parameter you can define object with some properties which then will be
 - rootMargin
 - threshold
 - placeholder
+- onload
 
 #### rootMargin
 
@@ -78,7 +79,7 @@ new MiniLazyload({
 
 #### placeholder
 
-Placeholder is the only parameter what doesn't work with IntersectionObserver whatsoever. When the error event occurs
+Placeholder is one out of two parameters what doesn't work with IntersectionObserver whatsoever. When the error event occurs
 on your image and placeholder is defined, then library will change **src** in your image to your placeholder src
 in order to load a placeholder image.
 
@@ -87,6 +88,20 @@ new MiniLazyload({
     rootMargin: "500px",
     threshold: .5,
     placeholder: "https://imgplaceholder.com/420x320/ff7f7f/333333/fa-image"
+});
+```
+
+#### onload
+
+To onload you can pass your own callback which then will be called 
+on each image when it's actually loaded.
+
+```js
+new MiniLazyload({
+    rootMargin: "500px",
+    threshold: .5,
+    placeholder: "https://imgplaceholder.com/420x320/ff7f7f/333333/fa-image"
+    onload: image => image.style.border = "10px dashed #000"
 });
 ```
 

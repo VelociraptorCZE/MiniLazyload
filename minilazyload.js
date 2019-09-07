@@ -28,7 +28,7 @@ export default function MiniLazyload (options = {}, selector, override) {
     });
   };
 
-  this.newObserver = () => (
+  this.newObserver = () =>
     new IntersectionObserver((entries, observer) => {
       entries.forEach(({ intersectionRatio, target }) => {
         if (intersectionRatio > 0) {
@@ -36,8 +36,7 @@ export default function MiniLazyload (options = {}, selector, override) {
           loadImage(target, true);
         }
       });
-    }, this.options)
-  );
+    }, this.options);
 
   const loadImage = (target, loadBg) => {
     const { src, srcset, bg } = target.dataset;
@@ -66,11 +65,14 @@ export default function MiniLazyload (options = {}, selector, override) {
   };
 
   const onEvents = element => {
-    const { placeholder } = this.options;
-    const loaded = () => element.classList.add("loaded");
+    const { placeholder, onload = () => {} } = this.options;
+    const loaded = () => {
+      onload(element);
+      element.classList.add("loaded");
+    };
 
     element.addEventListener("error", () => {
-      if (placeholder && element.className.indexOf("error") === -1) {
+      if (placeholder && !element.classList.contains("error")) {
         element.src = placeholder;
       }
       element.classList.add("error");
@@ -82,8 +84,8 @@ export default function MiniLazyload (options = {}, selector, override) {
 
   this.selector = selector || "[loading=lazy]";
   this.options = options;
-  this.enabled = !HTMLImageElement.prototype.hasOwnProperty("loading")
-    || override === MiniLazyload.IGNORE_NATIVE_LAZYLOAD;
+  this.enabled =
+    !HTMLImageElement.prototype.hasOwnProperty("loading") || override === MiniLazyload.IGNORE_NATIVE_LAZYLOAD;
   this.update();
 }
 
