@@ -79,7 +79,7 @@ new MiniLazyload({
 
 #### placeholder
 
-Placeholder is one out of parameters what doesn't work with IntersectionObserver whatsoever. When the error event occurs
+Placeholder is one out of two parameters what doesn't work with IntersectionObserver whatsoever. When the error event occurs
 on your image and placeholder is defined, then library will change **src** in your image to your placeholder src
 in order to load a placeholder image.
 
