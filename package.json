@@ -1,22 +1,29 @@
 {
-    "name": "minilazyload",
-    "version": "2.1.5",
-    "scripts": {
-        "build-watch": "rollup -c --watch",
-        "build": "rollup -c"
-    },
-    "devDependencies": {
-        "@babel/core": "7.5.5",
-        "@babel/preset-env": "7.5.5",
-        "rollup-plugin-uglify": "6.0.3",
-        "rollup-plugin-babel": "4.3.3",
-        "rollup": "1.20.3"
-    },
-    "authors": [
-        {
-            "name": "Simon Raichl",
-            "homepage": "https://github.com/velociraptorcze"
-        }
-    ],
-    "license": "MIT"
+  "name": "minilazyload",
+  "version": "2.1.5",
+  "scripts": {
+    "codefix": "prettierx \"./minilazyload.js\" \"./usenativelazyload.js\" --write --space-before-function-paren --list-different",
+    "build-watch": "rollup -c --watch",
+    "build": "rollup -c"
+  },
+  "devDependencies": {
+    "@babel/core": "7.5.5",
+    "@babel/preset-env": "7.5.5",
+    "prettierx": "0.7.1",
+    "rollup-plugin-uglify": "6.0.3",
+    "rollup-plugin-babel": "4.3.3",
+    "rollup": "1.20.3"
+  },
+  "description": "A tiny library for image, iframe and background lazyloading.",
+  "keywords": [
+    "lazyload",
+    "native lazyload"
+  ],
+  "authors": [
+    {
+      "name": "Simon Raichl",
+      "homepage": "https://github.com/velociraptorcze"
+    }
+  ],
+  "license": "MIT"
 }

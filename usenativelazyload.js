@@ -4,7 +4,7 @@
  * MIT License
  */
 
-export default function useNativeLazyload(miniLazyload, callback) {
+export default function useNativeLazyload (miniLazyload, callback) {
   if (!miniLazyload.enabled) {
     miniLazyload.allElements().forEach(element => {
       if (element.dataset.bg) {
