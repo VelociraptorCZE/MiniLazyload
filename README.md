@@ -145,76 +145,18 @@ new MiniLazyload({
 
 ### Override
 
-This is third and final parameter. MiniLazyload isn't executed in browsers which supports native lazyload by default,
-since Chrome is already shipped with this feature. You have two possible options to deal with this behavior with two different outcomes.
-
-If you omit this parameter then you should implement
-action to browsers with native lazyload, thankfully, this is fairly easy with this library.
-
-#### First option
-
-If you set override to *true*, then library will ignore native lazyload and MiniLazyload will be executed, or you can use
-**MiniLazyload.IGNORE_NATIVE_LAZYLOAD** flag for better readability. 
+This is third and final parameter. MiniLazyload wasn't executed in browsers with native lazyload support by default up to version 2.3.0,
+since Chrome is already shipped with this feature. You can use MiniLazyload.IGNORE_NATIVE_LAZYLOAD flag to ignore native lazyloading and use MiniLazyload regardless.
 
 ```js
 new MiniLazyload({
     rootMargin: "500px",
     threshold: .5,
-    placeholder: "https://imgplaceholder.com/420x320/ff7f7f/333333/fa-image"
-}, ".lazyload", MiniLazyload.IGNORE_NATIVE_LAZYLOAD); // Easiest option
+    placeholder: "http://via.placeholder.com/300x200"
+}, ".lazyload", MiniLazyload.IGNORE_NATIVE_LAZYLOAD);
 ```
 
-#### Second and preferable option
-
-```js
-const lazyload = new MiniLazyload({
-    rootMargin: "500px",
-    threshold: .5,
-    placeholder: "https://imgplaceholder.com/420x320/ff7f7f/333333/fa-image"
-}, ".lazyload");
-
-if (!lazyload.enabled) {
-    lazyload.loadImages(image => {
-       image.loading = "lazy";
-    });
-}
-```
-
-Every instance of MiniLazyload has property **enabled**, this property equals to *true* when override isn't set
-and browser doesn't have the native lazyload. So when **enabled** equals to false we need to handle this.
-
-You can use **loadImages** method, although this method is used internally you can use it to your advantage. It's
-also possible to pass a callback along with this method and you can set some important properties for each image in that callback.
-Bare minimum is to set attribute loading to *"lazy"* if isn't set previously and the library will do rest for you.
-
-#### useNativeLazyload wrapper
-
-Since version 2.1.0 you can instead of making this fallback for browsers with native lazyload use this function.
-
-Function takes two parameters, first is instance of MiniLazyload and second is optional callback.
-Returns your instance of MiniLazyload.
-
-##### Module import
-
-```js
-import useNativeLazyload from "minilazyload/usenativelazyload";
-```
-
-##### HTML import
-
-```html
-<script src="https://cdn.jsdelivr.net/npm/minilazyload@2.1.5/dist/usenativelazyload.min.js"></script>
-```
-
-##### Example
-
-```js
-const lazyload = useNativeLazyload(new MiniLazyload({
-    rootMargin: "500px",
-    threshold: .5,
-    placeholder: "https://imgplaceholder.com/420x320/ff7f7f/333333/fa-image"
-}, ".lazyload"));
-```
+From version 2.3.0 on you can safely omit this parameter and MiniLazyload will use native lazyloading where it's possible (Chrome 75+).
 
 ## HTML
 Both **src** and **srcset** attributes are supported and srcset is supported with images,

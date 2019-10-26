@@ -19,12 +19,4 @@ export default [{
         format: "iife",
     },
     plugins,
-}, {
-    input: "./usenativelazyload.js",
-    output: {
-        name: "useNativeLazyload",
-        file: "dist/usenativelazyload.min.js",
-        format: "iife",
-    },
-    plugins,
 }];
