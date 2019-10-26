@@ -1,8 +1,8 @@
 {
   "name": "minilazyload",
-  "version": "2.1.5",
+  "version": "2.3.0",
   "scripts": {
-    "codefix": "prettierx \"./minilazyload.js\" \"./usenativelazyload.js\" --write --space-before-function-paren --list-different",
+    "codefix": "prettierx \"./src/*.js\" --write --space-before-function-paren --list-different",
     "build-watch": "rollup -c --watch",
     "build": "rollup -c"
   },

@@ -4,12 +4,14 @@
  * MIT License
  */
 
-export default function MiniLazyload (options = {}, selector, override) {
-  const isIntersectionObserverNotSupported = () => !window.IntersectionObserver;
+import useNativeLazyload from "./usenativelazyload";
 
+export default function MiniLazyload (options = {}, selector, override) {
   this.update = () => {
     if (this.enabled) {
       this.loadImages(() => {}, false);
+    } else {
+      useNativeLazyload(this);
     }
   };
 
@@ -20,7 +22,7 @@ export default function MiniLazyload (options = {}, selector, override) {
       onEvents(element);
       callback(element);
 
-      if (isIntersectionObserverNotSupported() || loadImmediately) {
+      if (!window.IntersectionObserver || loadImmediately) {
         loadImage(element);
       } else {
         this.newObserver().observe(element);
@@ -49,7 +51,7 @@ export default function MiniLazyload (options = {}, selector, override) {
       target.srcset = srcset;
     }
 
-    if ((loadBg || isIntersectionObserverNotSupported()) && bg) {
+    if ((loadBg || !window.IntersectionObserver) && bg) {
       target.style.backgroundImage = `url(${bg})`;
     }
 

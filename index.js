@@ -1,3 +1,3 @@
-import MiniLazyload from "./minilazyload";
+import MiniLazyload from "./src/minilazyload";
 
 export default MiniLazyload;
