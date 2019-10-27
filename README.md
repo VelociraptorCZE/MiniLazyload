@@ -1,4 +1,4 @@
-# MiniLazyload [![](https://data.jsdelivr.com/v1/package/npm/minilazyload/badge?style=rounded)](https://www.jsdelivr.com/package/npm/minilazyload) ![npm](https://img.shields.io/npm/dm/minilazyload) ![](https://img.badgesize.io/velociraptorcze/minilazyload/master/dist/minilazyload.min.js.svg?compression=gzip)
+# MiniLazyload [![](https://data.jsdelivr.com/v1/package/npm/minilazyload/badge?style=rounded)](https://www.jsdelivr.com/package/npm/minilazyload) <a href="https://www.npmjs.com/package/minilazyload">![npm](https://img.shields.io/npm/dm/minilazyload)</a> <a href="https://cdn.jsdelivr.net/npm/minilazyload@2.3.0/dist/minilazyload.min.js">![](https://img.badgesize.io/velociraptorcze/minilazyload/master/dist/minilazyload.min.js.svg?compression=gzip)</a>
 
 A tiny library for image, iframe and background lazyloading.
 
