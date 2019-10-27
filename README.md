@@ -13,7 +13,7 @@ A tiny library for image, iframe and background lazyloading.
 If you want to directly import minified script to your HTML, you can do that with this piece of code:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/minilazyload@2.1.5/dist/minilazyload.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/minilazyload@2.3.0/dist/minilazyload.min.js"></script>
 ```
 
 ### Installation
