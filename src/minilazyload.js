@@ -52,7 +52,7 @@ export default function MiniLazyload (options = {}, selector, override) {
     }
 
     if ((loadBg || !window.IntersectionObserver) && bg) {
-      target.style.backgroundImage = `url(${bg})`;
+      target.style.backgroundImage = `url("${bg}")`;
     }
 
     translateSrcset(target.parentElement);
