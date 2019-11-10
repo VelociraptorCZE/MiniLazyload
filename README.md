@@ -13,7 +13,7 @@ A tiny library for image, iframe and background lazyloading.
 If you want to directly import minified script to your HTML, you can do that with this piece of code:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/minilazyload@2.3.0/dist/minilazyload.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/minilazyload@2.3.1/dist/minilazyload.min.js"></script>
 ```
 
 ### Installation
@@ -156,7 +156,7 @@ new MiniLazyload({
 }, ".lazyload", MiniLazyload.IGNORE_NATIVE_LAZYLOAD);
 ```
 
-From version 2.3.0 on you can safely omit this parameter and MiniLazyload will use native lazyloading where it's possible (Chrome 75+).
+From version 2.3.0 on you can safely omit this parameter and MiniLazyload will use native lazyloading where it's possible (Chrome 76+).
 
 ## HTML
 Both **src** and **srcset** attributes are supported and srcset is supported with images,
