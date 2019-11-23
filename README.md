@@ -158,6 +158,20 @@ new MiniLazyload({
 
 From version 2.3.0 on you can safely omit this parameter and MiniLazyload will use native lazyloading where it's possible (Chrome 76+).
 
+## Instance methods
+
+### update()
+
+You can use this method when you re-render your DOM for example, this method adds everything necessary for new elements.
+
+```js
+const lazyload = new MiniLazyload({}, ".lazyload");
+
+// somewhere else
+
+lazyload.update();
+```
+
 ## HTML
 Both **src** and **srcset** attributes are supported and srcset is supported with images,
 but also with descendants of picture element which has **data-srcset** attribute.
