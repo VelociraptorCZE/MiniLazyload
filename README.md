@@ -13,7 +13,7 @@ A tiny library for image, iframe and background lazyloading.
 If you want to directly import minified script to your HTML, you can do that with this piece of code:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/minilazyload@2.3.1/dist/minilazyload.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/minilazyload@2.3.3/dist/minilazyload.min.js"></script>
 ```
 
 ### Installation
@@ -176,7 +176,7 @@ lazyload.update();
 Both **src** and **srcset** attributes are supported and srcset is supported with images,
 but also with descendants of picture element which has **data-srcset** attribute.
 You need to add to your elements data attribute either **data-src** or **data-srcset**.
-For background lazyloading use **data-bg** attribute.
+For background lazyloading use **data-bg** attribute and for class lazyloading use **data-lazy-class**. 
 
 ```html
 <picture>
@@ -196,4 +196,7 @@ For background lazyloading use **data-bg** attribute.
 
 ```html
 <div data-bg="https://something.domain/some-image.jpg" class="lazyload"></div>
+```
+```html
+<div data-lazy-class="some-class" class="lazyload"></div>
 ```

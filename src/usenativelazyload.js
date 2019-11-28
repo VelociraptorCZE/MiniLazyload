@@ -6,7 +6,7 @@
 
 export default function useNativeLazyload (miniLazyload, callback) {
   miniLazyload.allElements().forEach(element => {
-    if (element.dataset.bg) {
+    if (element.dataset.bg || element.dataset.lazyClass) {
       miniLazyload.newObserver().observe(element);
     }
   });
