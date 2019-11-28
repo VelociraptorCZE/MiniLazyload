@@ -40,8 +40,9 @@ export default function MiniLazyload (options = {}, selector, override) {
       });
     }, this.options);
 
-  const loadImage = (target, loadBg) => {
-    const { src, srcset, bg } = target.dataset;
+  const loadImage = (target, loadSpecialAttrs) => {
+    const { src, srcset, bg, lazyClass } = target.dataset;
+    loadSpecialAttrs = loadSpecialAttrs || !window.IntersectionObserver;
 
     if (src) {
       target.src = src;
@@ -51,8 +52,12 @@ export default function MiniLazyload (options = {}, selector, override) {
       target.srcset = srcset;
     }
 
-    if ((loadBg || !window.IntersectionObserver) && bg) {
+    if (loadSpecialAttrs && bg) {
       target.style.backgroundImage = `url("${bg}")`;
+    }
+
+    if (loadSpecialAttrs && lazyClass) {
+      target.classList.add(lazyClass);
     }
 
     translateSrcset(target.parentElement);
