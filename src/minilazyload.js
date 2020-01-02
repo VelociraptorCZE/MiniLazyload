@@ -1,6 +1,6 @@
 /**
  * MiniLazyload
- * Copyright (c) Simon Raichl 2019
+ * Copyright (c) Simon Raichl 2019 - 2020
  * MIT License
  */
 
@@ -18,14 +18,16 @@ export default function MiniLazyload (options = {}, selector, override) {
   this.allElements = () => [].slice.call(document.querySelectorAll(this.selector));
 
   this.loadImages = (callback = () => {}, loadImmediately = true) => {
+    const intersectionObserver = window.IntersectionObserver && this.newObserver();
+
     this.allElements().forEach(element => {
       onEvents(element);
       callback(element);
 
-      if (!window.IntersectionObserver || loadImmediately) {
+      if (!intersectionObserver || loadImmediately) {
         loadImage(element);
       } else {
-        this.newObserver().observe(element);
+        intersectionObserver.observe(element);
       }
     });
   };
