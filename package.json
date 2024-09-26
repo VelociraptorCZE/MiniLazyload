@@ -12,7 +12,7 @@
     "prettierx": "0.7.1",
     "rollup-plugin-uglify": "6.0.3",
     "rollup-plugin-babel": "4.3.3",
-    "rollup": "1.20.3"
+    "rollup": "2.79.2"
   },
   "description": "A tiny library for image, iframe and background lazyloading.",
   "keywords": [
